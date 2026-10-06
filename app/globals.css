@@ -9,3 +9,27 @@ body {
 img {
   max-width: 100%;
 }
+
+@media print {
+  @page {
+    margin: 12mm;
+  }
+
+  /* Keep dark backgrounds and gradients when printing */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  html,
+  body {
+    background: white !important;
+  }
+
+  /* Avoid cutting a card or entry in half across pages */
+  article,
+  section,
+  li {
+    break-inside: avoid;
+  }
+}
