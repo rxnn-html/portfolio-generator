@@ -1,3 +1,5 @@
+import React from "react";
+
 // A tiny fake "screenshot" of each template, built with Tailwind boxes.
 function Preview({ type }) {
   if (type === "simple") {
@@ -59,7 +61,15 @@ function Preview({ type }) {
   );
 }
 
-export default function TemplateCard({ template, isCurrent, disabled, loading, onSelect }) {
+export default function TemplateCard({ template, isCurrent, disabled, loading, onSelect, onPrint }) {
+  const handlePrint = () => {
+    if (onPrint) {
+      onPrint(template);
+    } else {
+      window.print();
+    }
+  };
+
   return (
     <div
       className={`flex flex-col overflow-hidden rounded-xl border bg-white shadow-sm ${
@@ -81,14 +91,39 @@ export default function TemplateCard({ template, isCurrent, disabled, loading, o
         </div>
         <p className="mt-2 flex-1 text-sm text-gray-600">{template.description}</p>
 
-        <button
-          type="button"
-          onClick={onSelect}
-          disabled={disabled || loading}
-          className="mt-5 w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {loading ? "Saving..." : "Use This Template"}
-        </button>
+        {/* Action Buttons */}
+        <div className="mt-5 flex flex-col gap-2">
+          <button
+            type="button"
+            onClick={onSelect}
+            disabled={disabled || loading}
+            className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {loading ? "Saving..." : "Use This Template"}
+          </button>
+
+          <button
+            type="button"
+            onClick={handlePrint}
+            disabled={disabled || loading}
+            className="flex items-center justify-center gap-2 w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <svg
+              className="h-4 w-4 text-gray-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+              />
+            </svg>
+            Print / Save as PDF
+          </button>
+        </div>
       </div>
     </div>
   );
