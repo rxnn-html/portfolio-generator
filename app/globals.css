@@ -10,3 +10,49 @@ img {
   max-width: 100%;
 }
 
+/* ---------- PRINT / SAVE AS PDF ---------- */
+@page {
+  size: A4 portrait;
+  margin: 10mm;
+}
+
+@media print {
+  /* Always print colors and backgrounds, whatever the dialog says */
+  *,
+  *::before,
+  *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  html,
+  body {
+    background: #ffffff;
+  }
+
+  /* Dark template: paint the WHOLE page (including margins) dark */
+  html:has(.print-area[data-theme="creative"]),
+  html:has(.print-area[data-theme="creative"]) body {
+    background: #020617;
+  }
+
+  /* The sticky navigation bar is useless on paper */
+  .print-area nav {
+    display: none !important;
+  }
+
+  /* Remove screen-only shadows and avoid splitting blocks across pages */
+  .print-area * {
+    box-shadow: none !important;
+  }
+  .print-area section,
+  .print-area article,
+  .print-area li {
+    break-inside: avoid;
+  }
+  .print-area h1,
+  .print-area h2,
+  .print-area h3 {
+    break-after: avoid;
+  }
+}

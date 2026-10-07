@@ -13,7 +13,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <header className="border-b border-gray-200 bg-white">
+    <header className="border-b border-gray-200 bg-white print:hidden">
       <nav className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-3">
         <Link href="/" className="text-lg font-bold text-indigo-600">
           Portfolio Generator

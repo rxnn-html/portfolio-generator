@@ -1,15 +1,27 @@
 "use client";
 
-import { PrintIcon } from "@/components/templates/Icons";
+export default function PrintButton({ name }) {
+  function handlePrint() {
+    // The browser uses the page title as the default PDF file name
+    const originalTitle = document.title;
+    document.title = `${name} - Portfolio`;
 
-export default function PrintButton() {
+    const restore = () => {
+      document.title = originalTitle;
+      window.removeEventListener("afterprint", restore);
+    };
+    window.addEventListener("afterprint", restore);
+
+    window.print();
+  }
+
   return (
     <button
       type="button"
-      onClick={() => window.print()}
-      className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700 print:hidden"
+      onClick={handlePrint}
+      className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
     >
-      <PrintIcon /> Print / Save as PDF
+      Print / Save as PDF
     </button>
   );
 }
