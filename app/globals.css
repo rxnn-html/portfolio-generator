@@ -1,13 +1,85 @@
 @import "tailwindcss";
 
+/* 1. Make Tailwind's "dark:" classes work when <html class="dark"> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* 2. Our own animations. Each becomes a class: animate-float, animate-word-in */
+@theme {
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-word-in: word-in 0.45s ease-out;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  @keyframes word-in {
+    from { opacity: 0; transform: translateY(0.4em); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* 3. Page colors live in variables, so switching themes = changing variables */
+:root {
+  --page-bg: #f9fafb;
+  --page-fg: #111827;
+}
+
 body {
-  background-color: #f9fafb;
-  color: #111827;
+  background-color: var(--page-bg);
+  color: var(--page-fg);
   overflow-wrap: anywhere; /* long words/URLs wrap instead of causing sideways scrolling */
 }
 
 img {
   max-width: 100%;
+}
+
+/* ---------- DARK MODE ---------- */
+html.dark {
+  color-scheme: dark; /* dark scrollbars, dropdowns, and file inputs */
+  --page-bg: #0b1120;
+  --page-fg: #e5e7eb;
+
+  /* Flip Tailwind's gray scale: light grays become dark, dark grays become light.
+     Old pages use text-gray-900, border-gray-200, etc., so they adapt automatically. */
+  --color-gray-50: #0f1626;
+  --color-gray-100: #1b2438;
+  --color-gray-200: #263149;
+  --color-gray-300: #334155;
+  --color-gray-400: #64748b;
+  --color-gray-500: #94a3b8;
+  --color-gray-600: #a9b4c7;
+  --color-gray-700: #cbd5e1;
+  --color-gray-800: #e2e8f0;
+  --color-gray-900: #f1f5f9;
+
+  /* Error boxes: soft red tint instead of bright pink */
+  --color-red-50: rgb(239 68 68 / 0.12);
+  --color-red-200: rgb(239 68 68 / 0.4);
+  --color-red-700: #fca5a5;
+  --color-red-800: #fecaca;
+}
+
+/* White surfaces (cards, inputs) become a dark surface.
+   ".theme-fixed" marks areas with their own colors (the 3 portfolio templates
+   and the mini previews), so they are left alone. */
+html.dark .bg-white:not(.theme-fixed, .theme-fixed *) {
+  background-color: #131a2b;
+}
+
+/* Indigo accents that would be hard to read on dark surfaces */
+html.dark .text-indigo-700:not(.theme-fixed, .theme-fixed *) {
+  color: #a5b4fc;
+}
+html.dark .bg-indigo-50:not(.theme-fixed, .theme-fixed *),
+html.dark .hover\:bg-indigo-50:hover:not(.theme-fixed, .theme-fixed *) {
+  background-color: rgb(99 102 241 / 0.15);
+}
+html.dark .bg-indigo-100:not(.theme-fixed, .theme-fixed *) {
+  background-color: rgb(99 102 241 / 0.25);
+}
+html.dark .border-indigo-300:not(.theme-fixed, .theme-fixed *) {
+  border-color: rgb(99 102 241 / 0.5);
 }
 
 /* ---------- PRINT / SAVE AS PDF ---------- */
@@ -26,8 +98,10 @@ img {
   }
 
   html,
-  body {
+  body,
+  html.dark body {
     background: #ffffff;
+    color: #111827;
   }
 
   /* Dark template: paint the WHOLE page (including margins) dark */

@@ -55,7 +55,7 @@ export default async function PortfolioPage({ params }) {
       </div>
 
             {/* Only this part appears in the PDF */}
-      <div className="print-area" data-theme={portfolio.template}>
+            <div className="print-area theme-fixed" data-theme={portfolio.template}>
         <Template portfolio={portfolio} />
       </div>
     </div>

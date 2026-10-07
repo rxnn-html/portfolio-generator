@@ -1,61 +1,33 @@
 import Link from "next/link";
-
-const steps = [
-  { number: "1", title: "Enter your info", text: "Add your details, skills, projects, and experience." },
-  { number: "2", title: "Pick a template", text: "Choose Simple, Modern, or Creative." },
-  { number: "3", title: "Share your portfolio", text: "Preview it, edit it anytime, and keep it saved online." },
-];
+import HeroSection from "@/components/home/HeroSection";
+import HowItWorks from "@/components/home/HowItWorks";
+import TemplateShowcase from "@/components/home/TemplateShowcase";
+import FaqSection from "@/components/home/FaqSection";
+import { ArrowRightIcon } from "@/components/home/Icons";
 
 export default function HomePage() {
   return (
-    <div>
-      {/* Hero section */}
-      <section className="py-12 text-center sm:py-20">
-        <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
-          Build your online portfolio
-          <span className="block text-indigo-600">in minutes</span>
-        </h1>
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600">
-          Enter your information once, choose one of three professional
-          templates, and get a portfolio that is saved online and ready to
-          preview, edit, or delete anytime.
-        </p>
+    <div className="space-y-20 sm:space-y-28">
+      <HeroSection />
+      <HowItWorks />
+      <TemplateShowcase />
+      <FaqSection />
 
-        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Link
-            href="/create"
-            className="w-full rounded-lg bg-indigo-600 px-6 py-3 text-base font-semibold text-white shadow hover:bg-indigo-700 sm:w-auto"
-          >
-            Create Portfolio
-          </Link>
-          <Link
-            href="/manage"
-            className="w-full rounded-lg border border-gray-300 bg-white px-6 py-3 text-base font-semibold text-gray-700 hover:bg-gray-50 sm:w-auto"
-          >
-            View My Portfolios
-          </Link>
-        </div>
-      </section>
-
-      {/* How it works */}
-      <section className="py-8">
-        <h2 className="mb-8 text-center text-2xl font-bold text-gray-900">
-          How it works
+      {/* FINAL CALL TO ACTION */}
+      <section className="relative overflow-hidden rounded-[2rem] bg-linear-to-br from-indigo-600 via-violet-600 to-fuchsia-600 px-6 py-14 text-center text-white sm:px-12 sm:py-20">
+        <div aria-hidden className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-2xl" />
+        <h2 className="relative text-3xl font-extrabold tracking-tight sm:text-4xl">
+          Ready to build yours?
         </h2>
-        <div className="grid gap-6 md:grid-cols-3">
-          {steps.map((step) => (
-            <div
-              key={step.number}
-              className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
-            >
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 font-bold text-indigo-700">
-                {step.number}
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900">{step.title}</h3>
-              <p className="mt-2 text-gray-600">{step.text}</p>
-            </div>
-          ))}
-        </div>
+        <p className="relative mx-auto mt-4 max-w-xl text-lg text-indigo-100">
+          It takes a few minutes, and you can change everything later.
+        </p>
+        <Link
+          href="/create"
+          className="relative mt-8 inline-flex items-center gap-2 rounded-xl bg-slate-50 px-7 py-3.5 text-base font-semibold text-slate-900 shadow-lg transition hover:bg-white"
+        >
+          Create Portfolio <ArrowRightIcon />
+        </Link>
       </section>
     </div>
   );

@@ -3,12 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import TemplateCard from "@/components/TemplateCard";
-import PrintButton from "@/components/PrintButton";
-
-// ...inside the JSX, above the template:
-<div className="mb-4 flex justify-end print:hidden">
-  <PrintButton />
-</div>
 
 // EXACTLY three templates. There is no fourth.
 const TEMPLATES = [
