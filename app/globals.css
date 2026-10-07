@@ -39,6 +39,7 @@ html.dark {
   color-scheme: dark; /* dark scrollbars, dropdowns, and file inputs */
   --page-bg: #0b1120;
   --page-fg: #e5e7eb;
+  
 
   /* Flip Tailwind's gray scale: light grays become dark, dark grays become light.
      Old pages use text-gray-900, border-gray-200, etc., so they adapt automatically. */
