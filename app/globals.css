@@ -1,22 +1,7 @@
 @import "tailwindcss";
 
 /* 1. Make Tailwind's "dark:" classes work when <html class="dark"> */
-@custom-variant dark (&:where(.dark, .dark *));
 
-/* 2. Our own animations. Each becomes a class: animate-float, animate-word-in */
-@theme {
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-word-in: word-in 0.45s ease-out;
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-  @keyframes word-in {
-    from { opacity: 0; transform: translateY(0.4em); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-}
 
 /* 3. Page colors live in variables, so switching themes = changing variables */
 :root {
