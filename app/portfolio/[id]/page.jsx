@@ -14,6 +14,7 @@ import TemplateSwitcher from "@/components/TemplateSwitcher";
 import SimpleTemplate from "@/components/templates/SimpleTemplate";
 import ModernTemplate from "@/components/templates/ModernTemplate";
 import CreativeTemplate from "@/components/templates/CreativeTemplate";
+import Toast from "@/components/ui/Toast";
 
 export const metadata = { title: "Portfolio Preview | Portfolio Generator" };
 export const dynamic = "force-dynamic";
@@ -31,8 +32,9 @@ function joinNice(items) {
   return `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
 }
 
-export default async function PortfolioPage({ params }) {
+export default async function PortfolioPage({ params, searchParams }) {
   const { id } = await params;
+  const { notice } = await searchParams;
   const portfolio = await getPortfolio(id);
 
   if (!portfolio) notFound();
@@ -60,6 +62,7 @@ export default async function PortfolioPage({ params }) {
 
   return (
     <div>
+            <Toast notice={notice} />
       {/* ---------- HEADER (hidden when printing) ---------- */}
       <div className="mb-6 space-y-4 print:hidden">
         <Button href="/manage" variant="ghost" size="sm" className="-ml-2">
@@ -124,7 +127,7 @@ export default async function PortfolioPage({ params }) {
                 <DeleteButton
                   portfolioId={portfolio.id}
                   name={portfolio.full_name}
-                  redirectTo="/manage"
+                            redirectTo="/manage?notice=deleted"
                   label="Delete Portfolio"
                 />
               </div>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import DeleteButton from "@/components/DeleteButton";
+import Toast from "@/components/ui/Toast";
 
 export const metadata = { title: "My Portfolios | Portfolio Generator" };
 export const dynamic = "force-dynamic"; // always show fresh data
@@ -14,7 +15,8 @@ function formatDate(value) {
   });
 }
 
-export default async function ManagePage() {
+export default async function ManagePage({ searchParams }) {
+  const { notice } = await searchParams;
   const { data: portfolios, error } = await supabase
     .from("portfolios")
     .select("id, full_name, template, created_at")
@@ -24,6 +26,7 @@ export default async function ManagePage() {
 
   return (
     <div className="mx-auto max-w-4xl">
+            <Toast notice={notice} />
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">My Portfolios</h1>

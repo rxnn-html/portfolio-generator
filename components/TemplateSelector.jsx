@@ -45,7 +45,7 @@ export default function TemplateSelector({ portfolioId, currentTemplate }) {
         return;
       }
 
-      router.push(`/portfolio/${portfolioId}`);
+            router.push(`/portfolio/${portfolioId}?notice=ready`);
     } catch {
       setError("Could not reach the server. Check your internet connection and try again.");
     } finally {

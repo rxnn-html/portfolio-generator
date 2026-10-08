@@ -460,7 +460,7 @@ export default function PortfolioForm({ portfolio = null }) {
       }
 
       // 3. Success: the button stays in its "Saving..." state while the page changes
-      router.push(isEditing ? `/portfolio/${portfolio.id}` : `/templates?id=${result.id}`);
+           router.push(isEditing ? `/portfolio/${portfolio.id}?notice=saved` : `/templates?id=${result.id}`);
     } catch {
       setErrors(["Could not reach the server. Check your internet connection and try again."]);
       setSaving(false);

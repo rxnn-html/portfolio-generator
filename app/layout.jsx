@@ -1,5 +1,6 @@
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import Link from "next/link";
 
 export const metadata = {
   title: "Portfolio Generator",
@@ -32,8 +33,11 @@ export default function RootLayout({ children }) {
         <main className="mx-auto max-w-6xl px-4 py-8 print:max-w-none print:p-0">
           {children}
         </main>
-        <footer className="mx-auto max-w-6xl px-4 py-8 text-center text-sm text-slate-500 dark:text-slate-400 print:hidden">
-          Portfolio Generator · Built with Next.js, Tailwind CSS &amp; Supabase
+                <footer className="mx-auto max-w-6xl px-4 py-8 text-center text-sm text-slate-500 dark:text-slate-400 print:hidden">
+          Portfolio Generator · Built with Next.js, Tailwind CSS &amp; Supabase ·{" "}
+          <Link href="/design" className="underline underline-offset-4 hover:text-indigo-600">
+            Design notes
+          </Link>
         </footer>
       </body>
     </html>
