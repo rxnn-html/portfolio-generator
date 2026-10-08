@@ -1,5 +1,8 @@
 "use client";
 
+import Button from "@/components/ui/Button";
+import { PrinterIcon } from "@/components/ui/Icons";
+
 export default function PrintButton({ name }) {
   function handlePrint() {
     // The browser uses the page title as the default PDF file name
@@ -16,12 +19,8 @@ export default function PrintButton({ name }) {
   }
 
   return (
-    <button
-      type="button"
-      onClick={handlePrint}
-      className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-    >
-      Print / Save as PDF
-    </button>
+    <Button variant="secondary" onClick={handlePrint}>
+      <PrinterIcon width={16} height={16} /> Print / Save as PDF
+    </Button>
   );
 }
