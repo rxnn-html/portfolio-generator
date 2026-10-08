@@ -1,7 +1,8 @@
-import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import DeleteButton from "@/components/DeleteButton";
+import Button from "@/components/ui/Button";
+import Alert from "@/components/ui/Alert";
 import Toast from "@/components/ui/Toast";
+import ManageList from "@/components/ManageList";
 
 export const metadata = { title: "My Portfolios | Portfolio Generator" };
 export const dynamic = "force-dynamic"; // always show fresh data
@@ -17,89 +18,81 @@ function formatDate(value) {
 
 export default async function ManagePage({ searchParams }) {
   const { notice } = await searchParams;
-  const { data: portfolios, error } = await supabase
+
+  const { data, error } = await supabase
     .from("portfolios")
-    .select("id, full_name, template, created_at")
+    .select("id, full_name, email, profile_image, template, created_at")
     .order("created_at", { ascending: false }); // newest first
 
   if (error) console.error("Manage page load failed:", error.message);
 
+  // Format dates here so the browser receives plain, ready-to-show text
+  const portfolios = (data || []).map((p) => ({ ...p, created: formatDate(p.created_at) }));
+
+  const stats = [
+    { label: "Total", value: portfolios.length },
+    { label: "Simple", value: portfolios.filter((p) => p.template === "simple").length },
+    { label: "Modern", value: portfolios.filter((p) => p.template === "modern").length },
+    { label: "Creative", value: portfolios.filter((p) => p.template === "creative").length },
+  ];
+
   return (
-    <div className="mx-auto max-w-4xl">
-            <Toast notice={notice} />
-      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">My Portfolios</h1>
-          <p className="mt-1 text-gray-600">View, edit, or delete your saved portfolios.</p>
+    <div className="mx-auto max-w-6xl">
+      <Toast notice={notice} />
+
+      {/* HEADER */}
+      <section className="relative mb-8 overflow-hidden rounded-3xl bg-linear-to-br from-indigo-600 via-violet-600 to-fuchsia-600 px-6 py-9 text-white sm:px-10 sm:py-12">
+        <div aria-hidden className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-white/15 blur-3xl" />
+
+        <div className="relative flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-100">
+              Dashboard
+            </p>
+            <h1 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-5xl">
+              My Portfolios
+            </h1>
+            <p className="mt-2 max-w-md text-indigo-100">
+              View, edit, or delete your saved portfolios.
+            </p>
+          </div>
+          <Button href="/create" variant="secondary" size="lg" className="shrink-0 border-0">
+            + New Portfolio
+          </Button>
         </div>
-        <Link
-          href="/create"
-          className="rounded-lg bg-indigo-600 px-5 py-2.5 text-center text-sm font-semibold text-white hover:bg-indigo-700"
-        >
-          + New Portfolio
-        </Link>
-      </div>
+
+        <dl className="relative mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {stats.map((stat) => (
+            <div key={stat.label} className="rounded-2xl bg-white/15 p-4 backdrop-blur">
+              <dd className="text-2xl font-extrabold">{stat.value}</dd>
+              <dt className="text-xs uppercase tracking-wider text-indigo-100">{stat.label}</dt>
+            </div>
+          ))}
+        </dl>
+      </section>
 
       {/* ERROR STATE */}
       {error && (
-        <div role="alert" className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-          Your portfolios could not be loaded. Please refresh the page and try again.
-        </div>
+        <Alert tone="error" title="Could not load your portfolios">
+          Please refresh the page and try again.
+        </Alert>
       )}
 
       {/* EMPTY STATE */}
       {!error && portfolios.length === 0 && (
-        <div className="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center">
-          <p className="text-lg font-semibold text-gray-900">No portfolios yet</p>
-          <p className="mt-1 text-gray-600">Create your first one. It only takes a few minutes.</p>
-          <Link
-            href="/create"
-            className="mt-5 inline-block rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
-          >
+        <div className="rounded-3xl border border-dashed border-gray-300 bg-white p-12 text-center">
+          <p className="text-xl font-bold text-gray-900">No portfolios yet</p>
+          <p className="mt-2 text-gray-600">
+            Create your first one. It only takes a few minutes.
+          </p>
+          <Button href="/create" size="lg" className="mt-6">
             Create Portfolio
-          </Link>
+          </Button>
         </div>
       )}
 
       {/* LIST */}
-      {!error && portfolios.length > 0 && (
-        <ul className="space-y-4">
-          {portfolios.map((p) => (
-            <li
-              key={p.id}
-              className="flex flex-col gap-4 rounded-xl border border-gray-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between"
-            >
-              <div className="min-w-0">
-                <h2 className="truncate text-lg font-semibold text-gray-900">{p.full_name}</h2>
-                <p className="mt-1 text-sm text-gray-500">
-                  Created {formatDate(p.created_at)}
-                  <span className="mx-2">•</span>
-                  Template:{" "}
-                  <span className="rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-medium capitalize text-indigo-700">
-                    {p.template}
-                  </span>
-                </p>
-              </div>
-
-              <div className="flex flex-wrap items-start gap-2">
-                <Link
-                  href={`/portfolio/${p.id}`}
-                  className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
-                >
-                  View
-                </Link>
-                <Link
-                  href={`/create?edit=${p.id}`}
-                  className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                >
-                  Edit
-                </Link>
-                <DeleteButton portfolioId={p.id} name={p.full_name} />
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+      {!error && portfolios.length > 0 && <ManageList portfolios={portfolios} />}
     </div>
   );
 }
