@@ -288,8 +288,9 @@ function SkillsPicker({ skills, draft, onDraftChange, onAdd, onRemove }) {
             onChange={(e) => onDraftChange(e.target.value)}
             onKeyDown={handleKeyDown}
           />
-          <Button
+                    <Button
             variant="secondary"
+            className="shrink-0"
             onClick={() => draft.trim() && onAdd(draft)}
             disabled={atLimit}
           >
